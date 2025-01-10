@@ -1,36 +1,21 @@
 import { Text, View, Image, Dimensions } from "react-native";
-import { useState, FC, useEffect } from "react";
-import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 
 import CustomButton from "@/components/ui/CustomButton";
 import { DEFAULT_MUSIC_PICTURE, PLAY_ICON, PAUSE_ICON } from "@/constants";
 import { IMusic } from "@/interfaces/interfaces";
-import audioSource from "@/assets/music/Korol_i_SHut.mp3";
 import styles from "./style";
 
 interface ICurrentTrackProps {
+  isPlay: boolean;
   musicData: IMusic;
+  handlePlayMusic: () => void;
 }
 
-const CurrentTrack: FC<ICurrentTrackProps> = ({ musicData }) => {
-  const screenHeight = Dimensions.get("window").height - 120;
-
-  const [isPlay, setIsPlay] = useState(true);
-
-  const player = useAudioPlayer(audioSource);
-  const statusMusic = useAudioPlayerStatus(player);
+const CurrentTrack: React.FC<ICurrentTrackProps> = ({ isPlay, musicData, handlePlayMusic }) => {
+  const currentTrackHeight = 120
+  const screenHeight = Dimensions.get("window").height - currentTrackHeight;
 
   const iconButton = isPlay ? PAUSE_ICON : PLAY_ICON;
-
-  useEffect(() => {
-    isPlay ? player.play() : player.pause();
-
-    console.log(statusMusic);
-  }, [isPlay]);
-
-  const handlePlayMusic = () => {
-    setIsPlay(!isPlay);
-  };
 
   return (
     <View style={[styles.current_track, { top: screenHeight }]}>
