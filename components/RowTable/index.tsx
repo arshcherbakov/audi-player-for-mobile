@@ -7,6 +7,8 @@ import {
   DEFAULT_MUSIC_NAME,
   DEFAULT_MUSIC_PICTURE,
 } from "@/constants";
+import HeartIcon from "@/icons/HeartIcon";
+import ActionIcon from "@/icons/ActionIcon";
 import styles from "./style";
 
 interface IRowTableProps {
@@ -61,12 +63,12 @@ const RowTable: React.FC<IRowTableProps> = ({
       <View style={styles.controll}>
         <CustomButton
           handleButton={handleAddFavorites}
-          imageSource={require("@/assets/images/icons/favorites.svg")}
+          Icon={<HeartIcon />}
           styleButton={currentTrackButtonStyle}
         />
         <CustomButton
           handleButton={handleOptionsMenu}
-          imageSource={require("@/assets/images/icons/options_menu.svg")}
+          Icon={<ActionIcon />}
           styleButton={currentTrackButtonStyle}
         />
       </View>

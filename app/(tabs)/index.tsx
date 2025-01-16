@@ -1,11 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import { useState, useEffect } from "react";
-import { useAudioPlayer } from "expo-audio";
+
 
 import Header from "@/components/Header";
 import TableMusic from "@/components/TableMusic";
 import CurrentTrack from "@/components/CurrentTrack";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
+import useAudioPlayer from "@/hooks/useAudioPlayer";
 import { IMusic } from "@/interfaces/interfaces";
 import audioSource from "@/assets/music/Korol_i_SHut.mp3";
 
@@ -21,10 +21,10 @@ export default function HomeScreen() {
   );
   const [isPlay, setIsPlay] = useState<boolean>(false);
 
-  const player = useAudioPlayer(audioSource);
+  const { play, pause } = useAudioPlayer(audioSource);
 
   useEffect(() => {
-    isPlay ? player.play() : player.pause();
+    isPlay ? play() : pause();
   }, [isPlay]);
 
   const handlePlayMusic = () => {
@@ -37,8 +37,8 @@ export default function HomeScreen() {
   };
 
   return (
-    <ParallaxScrollView>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <View style={styles.container_content}>
         <Header />
         <TableMusic
           trackId={currentTrack.id}
@@ -46,12 +46,16 @@ export default function HomeScreen() {
         />
       </View>
       {currentTrack.id && <CurrentTrack musicData={currentTrack}  isPlay={isPlay} handlePlayMusic={handlePlayMusic} />}
-    </ParallaxScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: "#000000",
+  },
+  container_content: {
     height: "100%",
     padding: 20,
   },
