@@ -7,7 +7,7 @@ import TableMusic from "@/components/TableMusic";
 import CurrentTrack from "@/components/CurrentTrack";
 import useAudioPlayer from "@/hooks/useAudioPlayer";
 import { IMusic } from "@/interfaces/interfaces";
-import audioSource from "@/assets/music/Korol_i_SHut.mp3";
+const audioSource = require("@/assets/music/Korol_i_SHut.mp3");
 
 const initStateCurrentTrack = {
   id: "",

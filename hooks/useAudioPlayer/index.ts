@@ -1,13 +1,17 @@
 import { Audio } from 'expo-av';
 import { useEffect, useRef } from 'react';
+import { Asset } from 'expo-asset';
 
 const useAudioPlayer = (pathAudio: string) => {
   const player = useRef<Audio.Sound | null>(null);
 
   useEffect(() => {
     const createConnection = async (): Promise<void> => {
+      const audioAsset = Asset.fromModule(pathAudio);
+      await audioAsset.downloadAsync();
+
       const { sound: playbackObject } = await Audio.Sound.createAsync({
-        uri: pathAudio,
+        uri: audioAsset.uri,
       });
 
       player.current = playbackObject;
