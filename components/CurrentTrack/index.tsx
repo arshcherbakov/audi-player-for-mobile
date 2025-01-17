@@ -1,25 +1,23 @@
 import { Text, View, Image, Dimensions } from "react-native";
-import { useState, FC } from "react";
 
 import CustomButton from "@/components/ui/CustomButton";
-import { DEFAULT_MUSIC_PICTURE, PLAY_ICON, PAUSE_ICON } from "@/constants";
+import { DEFAULT_MUSIC_PICTURE } from "@/constants";
+import PlayIcon from "@/icons/PlayIcon";
+import PauseIcon from "@/icons/PauseIcon";
 import { IMusic } from "@/interfaces/interfaces";
 import styles from "./style";
 
 interface ICurrentTrackProps {
+  isPlay: boolean;
   musicData: IMusic;
+  handlePlayMusic: () => void;
 }
 
-const CurrentTrack: FC<ICurrentTrackProps> = ({ musicData }) => {
-  const screenHeight = Dimensions.get("window").height - 120;
+const CurrentTrack: React.FC<ICurrentTrackProps> = ({ isPlay, musicData, handlePlayMusic }) => {
+  const currentTrackHeight = 120
+  const screenHeight = Dimensions.get("window").height - currentTrackHeight;
 
-  const [isPlay, setIsPlay] = useState(true);
-
-  const iconButton = isPlay ? PAUSE_ICON : PLAY_ICON;
-
-  const handlePlayMusic = () => {
-    setIsPlay(!isPlay);
-  };
+  const buttonIcon = isPlay ? <PauseIcon />: <PlayIcon />;
 
   return (
     <View style={[styles.current_track, { top: screenHeight }]}>
@@ -43,7 +41,7 @@ const CurrentTrack: FC<ICurrentTrackProps> = ({ musicData }) => {
         </View>
         <CustomButton
           handleButton={handlePlayMusic}
-          imageSource={iconButton}
+          Icon={buttonIcon}
           styleButton={styles.play_button}
         />
       </View>

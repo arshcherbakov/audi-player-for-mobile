@@ -5,7 +5,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     width: "100%",
-
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
     backgroundColor: "#1E1E1E",
   },
   container: {

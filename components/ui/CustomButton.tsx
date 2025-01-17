@@ -3,23 +3,21 @@ import {
   TouchableOpacity,
   StyleProp,
   ViewStyle,
-  Image,
-  ImageSourcePropType,
 } from "react-native";
 
 interface ICustomButtonProps {
   handleButton: () => void;
   styleButton?: StyleProp<ViewStyle>;
-  imageSource?: ImageSourcePropType;
+  Icon?: React.ReactNode;
 }
 
 const CustomButton: React.FC<ICustomButtonProps> = ({
   handleButton,
   styleButton,
-  imageSource,
+  Icon,
 }) => (
   <TouchableOpacity onPress={handleButton} style={[styles.button, styleButton]}>
-    {imageSource && <Image source={imageSource} />}
+    {Icon && Icon}
   </TouchableOpacity>
 );
 
