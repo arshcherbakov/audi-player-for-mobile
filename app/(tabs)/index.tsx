@@ -1,11 +1,13 @@
 import { StyleSheet, View } from "react-native";
 import { useState, useEffect } from "react";
-
+import { documentDirectory } from 'expo-file-system';
 
 import Header from "@/components/Header";
 import TableMusic from "@/components/TableMusic";
 import CurrentTrack from "@/components/CurrentTrack";
 import useAudioPlayer from "@/hooks/useAudioPlayer";
+import useReadDirectory from "@/hooks/useReadDirectory";
+import { uploadFileInDirectory } from "@/service/directory";
 import { IMusic } from "@/interfaces/interfaces";
 const audioSource = require("@/assets/music/Korol_i_SHut.mp3");
 
@@ -20,8 +22,13 @@ export default function HomeScreen() {
     initStateCurrentTrack
   );
   const [isPlay, setIsPlay] = useState<boolean>(false);
+  const [error, listsAudioFiles, setListsAudioFiles] = useReadDirectory(documentDirectory + 'music/');
 
   const { play, pause } = useAudioPlayer(audioSource);
+
+  useEffect(() => {
+    uploadFileInDirectory(documentDirectory + 'music/', audioSource)
+  }, []);
 
   useEffect(() => {
     isPlay ? play() : pause();
