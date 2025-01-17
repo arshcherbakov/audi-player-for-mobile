@@ -1,20 +1,27 @@
 import { Audio } from 'expo-av';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Asset } from 'expo-asset';
 
 const useAudioPlayer = (pathAudio: string) => {
   const player = useRef<Audio.Sound | null>(null);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     const createConnection = async (): Promise<void> => {
-      const audioAsset = Asset.fromModule(pathAudio);
-      await audioAsset.downloadAsync();
+      try {
+        const audioAsset = Asset.fromModule(pathAudio);
+        await audioAsset.downloadAsync();
 
-      const { sound: playbackObject } = await Audio.Sound.createAsync({
-        uri: audioAsset.uri,
-      });
+        const { sound: playbackObject } = await Audio.Sound.createAsync({
+          uri: audioAsset.uri,
+        });
 
-      player.current = playbackObject;
+        player.current = playbackObject;
+
+        setIsLoaded(true);
+      } catch (error: unknown) {
+        console.error('Ошибка загрузки аудио', error);
+      }
     };
 
     createConnection();
@@ -22,14 +29,22 @@ const useAudioPlayer = (pathAudio: string) => {
     return () => {
       player.current?.unloadAsync();
     };
-  }, []);
+  }, [pathAudio]);
 
   const play = async (): Promise<void> => {
-    await player.current?.setStatusAsync({ shouldPlay: true });
+    try {
+      await player.current?.setStatusAsync({ shouldPlay: true });
+    } catch (error: unknown) {
+      console.error('Ошибка воспроизведения аудио', error);
+    }
   };
 
   const pause = async (): Promise<void> => {
-    await player.current?.setStatusAsync({ shouldPlay: false });
+    try {
+      await player.current?.setStatusAsync({ shouldPlay: false });
+    } catch (error: unknown) {
+      console.error('Ошибка остановки аудио', error);
+    }
   };
 
   const playerAudio = player.current;
@@ -38,6 +53,7 @@ const useAudioPlayer = (pathAudio: string) => {
     playerAudio,
     play,
     pause,
+    isLoaded,
   };
 };
 
